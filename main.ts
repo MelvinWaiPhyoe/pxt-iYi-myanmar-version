@@ -6,7 +6,7 @@
 /**
  * Extension for DC and Servo Motors
  */
-//% weight=40 color="#FF6600" icon="\u2606" block="iYi Motor" advanced=false
+//% color="#FF6600" icon="\u2606" block="iYi Motor" advanced=false
 //% groups=["DC Motor", "Servo Motor"]
 namespace iYiMotor{
     export enum iYiDC{
@@ -196,7 +196,7 @@ namespace iYiMotor{
 /**
  * Extension for Analog and Digital Sensors 
  */
-//% weight=30 color="#FF00FF" icon="\u26ba" block="iYi Sensor" advanced=false
+//% color="#C00FC2" icon="\u26ba" block="iYi Sensor" advanced=false
 namespace iYiSensor{
     export enum iYiButton{
         //% block="ခလုပ်ကိုနှိပ်လျှင်"
@@ -483,7 +483,7 @@ namespace iYiSensor{
     }
 }
 
-//% weight=20 color="#5A4AA5" icon="\u266c" block="iYi Music Gallery" advanced=false
+//% color="#5A4AA5" icon="\u266c" block="iYi Music Gallery" advanced=false
 namespace iYiMusic{
     export enum enMusic {
         dadadum = 0,
@@ -537,10 +537,147 @@ namespace iYiMusic{
     }
 }
 
-//% weight=10 color="#38B6FF" icon="\u26cb" block="iYi Display" advanced=false
+//% color="#C90B0B" icon="\u26cb" block="iYi Display" advanced=false
 namespace iYiDisplay{
-    //% block
-    export function display(){
+    export enum enColor {
+        //% blockId="OFF" block="ပိတ်သည်"
+        OFF = 0,
+        //% blockId="Red" block="အနီရောင်"
+        Red,
+        //% blockId="Green" block="အစိမ်းရောင်"
+        Green,
+        //% blockId="Blue" block="အပြာရောင်"
+        Blue,
+        //% blockId="White" block="အဖြူရောင်"
+        White,
+        //% blockId="Pinkish" block="ပန်းနုရောင်"
+        Pinkish,
+        //% blockId="Yellow" block="အဝါရောင်"
+        Yellow,
+    }
+
+    export enum enLED1 {
+        //% blockId="OFF" block="ပိတ်သည်"
+        OFF = 0,
+        //% blockId="ON" block="ဖွင့်သည်"
+        ON = 1
+    }    
+
+    //% blockId=iYi_Display_LED1 block="LED1|pin %pin|value %value"
+    //% weight=5
+    //% blockGap=20
+    //% name.fieldEditor="gridpicker" name.fieldOptions.columns=1
+    export function LED1(pin: DigitalPin, value: enLED1): void {
+        pins.digitalWritePin(pin, value);
+    }
+
+    //% blockId=iYI_Display_LED2 block="LED2|pin %pin|value %value"
+    //% weight=4
+    //% blockGap=20
+    //% value.min=0 value.max=255
+    //% name.fieldEditor="gridpicker" name.fieldOptions.columns=2
+    export function LED2(pin: AnalogPin, value: number): void {
+        pins.analogWritePin(pin, value * 1024 / 256);
+    }
+
+    //% blockId=iYi_Display_RGB block="RGB|pin1 %pin1|pin2 %pin2|pin3 %pin3|value1 %value1|value2 %value2|value3 %value3"
+    //% weight=2
+    //% blockGap=20
+    //% value1.min=0 value1.max=255 value2.min=0 value2.max=255 value3.min=0 value3.max=255
+    //% name.fieldEditor="gridpicker" name.fieldOptions.columns=4
+    export function RGB(pin1: AnalogPin, pin2: AnalogPin, pin3: AnalogPin, value1: number, value2: number, value3: number): void {
+        pins.analogWritePin(pin1, value1 * 1024 / 256);
+        pins.analogWritePin(pin2, value2 * 1024 / 256);
+        pins.analogWritePin(pin3, value3 * 1024 / 256);
+    }
+
+    //% blockId=iYi_Display_RGB2 block="RGB|pin1 %pin1|pin2 %pin2|pin3 %pin3|value %value"
+    //% weight=1
+    //% blockGap=20
+    //% name.fieldEditor="gridpicker" name.fieldOptions.columns=4
+    export function RGB2(pin1: DigitalPin, pin2: DigitalPin, pin3: DigitalPin, value: enColor): void {
+        switch (value) {
+            case enColor.OFF: {
+                pins.digitalWritePin(pin1, 0);
+                pins.digitalWritePin(pin2, 0);
+                pins.digitalWritePin(pin3, 0);
+                break;
+            }
+            case enColor.Red: {
+                pins.digitalWritePin(pin1, 1);
+                pins.digitalWritePin(pin2, 0);
+                pins.digitalWritePin(pin3, 0);
+                break;
+            }
+            case enColor.Green: {
+                pins.digitalWritePin(pin1, 0);
+                pins.digitalWritePin(pin2, 1);
+                pins.digitalWritePin(pin3, 0);
+                break;
+            }
+            case enColor.Blue: {
+                pins.digitalWritePin(pin1, 0);
+                pins.digitalWritePin(pin2, 0);
+                pins.digitalWritePin(pin3, 1);
+                break;
+            }
+            case enColor.White: {
+                pins.digitalWritePin(pin1, 1);
+                pins.digitalWritePin(pin2, 1);
+                pins.digitalWritePin(pin3, 1);
+                break;
+            }
+            case enColor.Pinkish: {
+                pins.digitalWritePin(pin1, 1);
+                pins.digitalWritePin(pin2, 0);
+                pins.digitalWritePin(pin3, 1);
+                break;
+            }
+            case enColor.Yellow: {
+                pins.digitalWritePin(pin1, 1);
+                pins.digitalWritePin(pin2, 1);
+                pins.digitalWritePin(pin3, 0);
+                break;
+            }
+        }
+    }
+    
+}
+
+//% color="#0CB441" icon="\u2699" block="iYi Input" advanced=false
+namespace iYiInput{
+    export enum enButton {
+        //% blockId="Press" block="ဖိသောအခါ"
+        Press = 0,
+        //% blockId="Realse" block="လွှတ်သောအခါ"
+        Realse = 1
+    }
+
+    
+    //% blockId=iYi_Input_Potentiometer block="Potentiometer|pin %pin"
+    //% weight=100
+    //% blockGap=20
+    //% name.fieldEditor="gridpocker" name.fieldOption.columns=5
+    export function Potentiometer(pin: AnalogPin): number {
+        let value: number;
+        value = pins.analogReadPin(pin);
+        return value;
+    }
+
+    //% blockId=CrocoKit_Input_Button block="%pin|ရှိခလုပ်ကို |%value"
+    //% weight=98
+    //% blockGap=20
+    //% name.fieldEditor="gridpicker" name.fieldOptions.columns=5
+    export function Button(pin: DigitalPin, value: enButton): boolean {
+        pins.setPull(pin, PinPullMode.PullUp);
+        return pins.digitalReadPin(pin) == value;
+    }
+}
+
+//% color="#DBC409" icon="\u265a" block="iYi Origin" advanced=false
+namespace iYiOrigin{
+    //%  blockId=iYiOrigin block="မူလအခြေအနေသို့ပြန်သွားရန်"
+    export function Oirigin(){
 
     }
 }
